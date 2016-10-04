@@ -23,18 +23,11 @@ error = (X * theta) - y;
 error_sq = error .^ 2;
 sum_sq_error = sum(error_sq);
 J = (1 / (2 * m)) * sum_sq_error;
+J += (lambda / (2 * m)) * sum((theta(2:length(theta))) .^ 2);
 
-%theta(1) = 0;
-%reg = sum(theta .^ 2) * (lambda / (2 * m));
-%J = J + reg;
-
-%J = sum(error .^ 2) / (2*m);
-%reg = (theta(2, :)' * theta(2, :)) * (lambda / (2 * m));
-%5J = J + reg;
-
-%grad = (error' * X)' / m;
-%grad(2) = grad(2) + (theta(2) * (lambda / m));
-
-grad = grad(:);
+grad = (1 / m) * (error' * X)';
+theta2 = theta(:,:);
+theta2(1,1) = 0;
+grad += (lambda / m) * theta2;
 
 end
